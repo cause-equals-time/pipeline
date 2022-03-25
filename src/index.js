@@ -10,8 +10,30 @@ const createResponse = (statusCode, body) => {
     
     return {
         statusCode: statusCode,
-        body: body
+        body: JSON.stringify(body)
     }
+};
+
+
+exports.put = (event, context, callback) => {
+    
+    let item = JSON.parse(event.body);
+    item.id = event.pathParameters.resourceId;
+
+    let params = {
+        TableName: tableName,
+        Item: item
+    };
+    
+    let dbPut = (params) => { return dynamo.put(params).promise() };
+    
+    dbPut(params).then( (data) => {
+        console.log(`PUT ITEM SUCCEEDED WITH doc = ${data.Item}`);
+        callback(null, createResponse(200, data.Item));
+    }).catch( (err) => { 
+        console.log(`PUT ITEM FAILED FOR doc = ${data.Item}, WITH ERROR: ${err}`);
+        callback(null, createResponse(500, err)); 
+    });
 };
 
 exports.get = (event, context, callback) => {
@@ -30,34 +52,11 @@ exports.get = (event, context, callback) => {
             callback(null, createResponse(404, "ITEM NOT FOUND"));
             return;
         }
-        console.log(`RETRIEVED ITEM SUCCESSFULLY WITH doc = ${data.Item.doc}`);
-        callback(null, createResponse(200, data.Item.doc));
+        console.log(`RETRIEVED ITEM SUCCESSFULLY WITH doc = ${data.Item}`);
+        callback(null, createResponse(200, data.Item));
     }).catch( (err) => { 
-        console.log(`GET ITEM FAILED FOR doc = ${params.Key.id}, WITH ERROR: ${err}`);
+        console.log(`GET ITEM FAILED FOR id = ${params.Key.id}, WITH ERROR: ${err}`);
         callback(null, createResponse(500, err));
-    });
-};
-
-exports.put = (event, context, callback) => {
-    
-    let item = {
-        id: event.pathParameters.resourceId,
-        doc: event.body
-    };
-
-    let params = {
-        TableName: tableName,
-        Item: item
-    };
-    
-    let dbPut = (params) => { return dynamo.put(params).promise() };
-    
-    dbPut(params).then( (data) => {
-        console.log(`PUT ITEM SUCCEEDED WITH doc = ${item.doc}`);
-        callback(null, createResponse(200, null));
-    }).catch( (err) => { 
-        console.log(`PUT ITEM FAILED FOR doc = ${item.doc}, WITH ERROR: ${err}`);
-        callback(null, createResponse(500, err)); 
     });
 };
 
