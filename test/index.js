@@ -4,10 +4,10 @@ const axios = require('axios');
 axios.defaults.baseURL = 'https://4qofk8772j.execute-api.eu-central-1.amazonaws.com/Prod';
 
 
-describe("CRUD API testing", () => {
+describe("CRUD API testing", async () => {
     const input = {id:Date.now(), name:"daniel", age:17};
-    describe("PUT item", function() {
-        it("returns the item", async function() {
+    describe("PUT item", async () => {
+        it("returns the item", async () => {
             const response = await axios.put(`/resource/${input.id}`, input);
             expect(response.status).to.equal(200);
             expect(response.data.id).to.equal(input.id.toString());
@@ -16,8 +16,8 @@ describe("CRUD API testing", () => {
         });      
     });
 
-    describe("GET item", () => {
-        it("returns the item", async function() {
+    describe("GET item", async () => {
+        it("returns the item", async () => {
             const response = await axios.get(`/resource/${input.id}`);
             expect(response.status).to.equal(200);
             expect(response.data.id).to.equal(input.id.toString());
@@ -25,8 +25,8 @@ describe("CRUD API testing", () => {
             expect(response.data.age).to.equal(17);
         });  
     });
-    describe("DELETE item", () => {
-        it("deletes the item", async function() {
+    describe("DELETE item", async () => {
+        it("deletes the item", async () => {
             const response = await axios.delete(`/resource/${input.id}`);
             expect(response.status).to.equal(200);
         });  
