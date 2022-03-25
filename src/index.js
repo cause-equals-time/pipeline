@@ -28,10 +28,10 @@ exports.put = (event, context, callback) => {
     let dbPut = (params) => { return dynamo.put(params).promise() };
     
     dbPut(params).then( (data) => {
-        console.log(`PUT ITEM SUCCEEDED WITH doc = ${data.Item}`);
-        callback(null, createResponse(200, data.Item));
+        console.log(`PUT ITEM SUCCEEDED WITH doc = ${data}`);
+        callback(null, createResponse(200, item));
     }).catch( (err) => { 
-        console.log(`PUT ITEM FAILED FOR doc = ${data.Item}, WITH ERROR: ${err}`);
+        console.log(`PUT ITEM FAILED FOR doc = ${item}, WITH ERROR: ${err}`);
         callback(null, createResponse(500, err)); 
     });
 };

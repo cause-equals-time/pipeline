@@ -21,22 +21,32 @@ async function run(){
     console.log(item);
 }
 run();
-describe("CRUD API testing", function() {
-
+describe("CRUD API testing", () => {
+    const input = {id:Date.now(), name:"daniel", age:17};
     describe("PUT item", function() {
         it("returns the item", async function() {
-            const input = {name:"daniel", age:17};
-            const item = (await axios.put(`/resource/${Date.now()}`, input)).data;
-            console.log(item);
-            expect(item.name).to.equal("daniel");
+            const response = await axios.put(`/resource/${input.id}`, input);
+            expect(response.status).to.equal(200);
+            expect(response.data.id).to.equal(input.id);
+            expect(response.data.name).to.equal("daniel");
+            expect(response.data.age).to.equal(17);
         });      
     });
 
-    describe("GET item", function() {
-    // specification for HEX to RGB converter
+    describe("GET item", () => {
+        it("returns the item", async function() {
+            const response = await axios.get(`/resource/${input.id}`);
+            expect(response.status).to.equal(200);
+            expect(response.data.id).to.equal(input.id);
+            expect(response.data.name).to.equal("daniel");
+            expect(response.data.age).to.equal(17);
+        });  
     });
     describe("DELETE item", function() {
-        // specification for HEX to RGB converter
+        it("deletes the item", async function() {
+            const response = await axios.delete(`/resource/${input.id}`);
+            expect(response.status).to.equal(200);
+        });  
     });
 });
 
