@@ -1,4 +1,4 @@
-var {describe, it} = require('mocha');
+//var {describe, it} = require('mocha');
 let expect = require("chai").expect;
 const axios = require('axios');
 axios.defaults.baseURL = 'https://4qofk8772j.execute-api.eu-central-1.amazonaws.com/Prod';
@@ -25,7 +25,7 @@ describe("CRUD API testing", () => {
             expect(response.data.age).to.equal(17);
         });  
     });
-    describe("DELETE item", function() {
+    describe("DELETE item", () => {
         it("deletes the item", async function() {
             const response = await axios.delete(`/resource/${input.id}`);
             expect(response.status).to.equal(200);
