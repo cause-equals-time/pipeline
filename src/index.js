@@ -49,7 +49,7 @@ exports.get = (event, context, callback) => {
     
     dbGet(params).then( (data) => {
         if (!data.Item) {
-            callback(null, createResponse(404, "ITEM NOT FOUND"));
+            callback(null, createResponse(404, "ITEM WAS NOT FOUND"));
             return;
         }
         console.log(`RETRIEVED ITEM SUCCESSFULLY WITH doc = ${data.Item}`);
